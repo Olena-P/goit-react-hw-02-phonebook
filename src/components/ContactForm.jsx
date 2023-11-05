@@ -1,13 +1,12 @@
-import React, { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import React from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
 const ContactForm = ({ onAddContact, contacts }) => {
-  const [name, setName] = useState("");
-  const [number, setNumber] = useState("");
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (contacts.some((contact) => contact.name === name)) {
+  const handleSubmit = (values, { resetForm }) => {
+    const { name, number } = values;
+    if (contacts.some(contact => contact.name === name)) {
       alert(`${name} is already in contacts.`);
       return;
     }
@@ -17,30 +16,37 @@ const ContactForm = ({ onAddContact, contacts }) => {
       number,
     };
     onAddContact(newContact);
-    setName("");
-    setNumber("");
+    resetForm();
   };
 
+  const validationSchema = Yup.object().shape({
+    name: Yup.string()
+      .min(2, 'Name must be at least 2 characters')
+      .required('Name is required'),
+    number: Yup.string()
+      .matches(/^\d+$/, 'Invalid phone number')
+      .required('Phone number is required'),
+  });
+
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Name"
-        required
-      />
-      <input
-        type="tel"
-        name="number"
-        value={number}
-        onChange={(e) => setNumber(e.target.value)}
-        placeholder="Phone Number"
-        required
-      />
-      <button type="submit">Add contact</button>
-    </form>
+    <Formik
+      initialValues={{
+        name: '',
+        number: '',
+      }}
+      onSubmit={handleSubmit}
+      validationSchema={validationSchema}
+    >
+      <Form>
+        <Field type="text" name="name" placeholder="Name" />
+        <ErrorMessage name="name" component="div" style={{ color: 'red' }} />
+
+        <Field type="tel" name="number" placeholder="Number" />
+        <ErrorMessage name="number" component="div" style={{ color: 'red' }} />
+
+        <button type="submit">Add contact</button>
+      </Form>
+    </Formik>
   );
 };
 
