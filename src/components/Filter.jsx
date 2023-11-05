@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const Filter = ({ filter, onChangeFilter }) => {
   return (
@@ -8,7 +8,7 @@ const Filter = ({ filter, onChangeFilter }) => {
         type="text"
         name="filter"
         value={filter}
-        onChange={(e) => onChangeFilter(e.target.value)}
+        onChange={e => onChangeFilter(e.target.value)}
       />
     </div>
   );
