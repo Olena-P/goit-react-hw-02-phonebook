@@ -44,13 +44,13 @@ class App extends Component {
   };
 
   render() {
-    const { contacts, filter } = this.state;
+    const { filter } = this.state;
     const filteredContacts = this.filterContacts();
 
     return (
       <div>
         <h1>Phonebook</h1>
-        <ContactForm onAddContact={this.addContact} contacts={contacts} />
+        <ContactForm onAddContact={this.addContact} />
 
         <h2>Contacts</h2>
         <Filter filter={filter} onChangeFilter={this.handleChangeFilter} />
