@@ -3,13 +3,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
-const ContactForm = ({ onAddContact, contacts }) => {
+const ContactForm = ({ onAddContact }) => {
   const handleSubmit = (values, { resetForm }) => {
     const { name, number } = values;
-    if (contacts.some(contact => contact.name === name)) {
-      alert(`${name} is already in contacts.`);
-      return;
-    }
+
     const newContact = {
       id: uuidv4(),
       name,
